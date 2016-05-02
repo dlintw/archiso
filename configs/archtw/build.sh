@@ -2,8 +2,8 @@
 
 set -e -u
 
-iso_name=archlinux
-iso_label="ARCH_$(date +%Y%m)"
+iso_name=archtw
+iso_label="ARCH_TW"
 iso_version=$(date +%Y.%m.%d)
 install_dir=arch
 work_dir=work
@@ -32,6 +32,8 @@ _usage ()
     echo "    -o <out_dir>       Set the output directory"
     echo "                        Default: ${out_dir}"
     echo "    -v                 Enable verbose output"
+    echo "    -r                 clear and rebuild"
+    echo "    -rr                clear work & output directories and rebuild"
     echo "    -h                 This help message"
     exit ${1}
 }
@@ -93,9 +95,9 @@ make_setup_mkinitcpio() {
 
 # Customize installation (airootfs)
 make_customize_airootfs() {
-    cp -af ${script_path}/airootfs ${work_dir}/${arch}
-
     curl -o ${work_dir}/${arch}/airootfs/etc/pacman.d/mirrorlist 'https://www.archlinux.org/mirrorlist/?country=all&protocol=http&use_mirror_status=on'
+
+    cp -af ${script_path}/airootfs ${work_dir}/${arch}
 
     lynx -dump -nolist 'https://wiki.archlinux.org/index.php/Installation_Guide?action=render' >> ${work_dir}/${arch}/airootfs/root/install.txt
 
@@ -213,20 +215,22 @@ make_prepare() {
 
 # Build ISO
 make_iso() {
-    mkarchiso ${verbose} -w "${work_dir}" -D "${install_dir}" -L "${iso_label}" -o "${out_dir}" iso "${iso_name}-${iso_version}-dual.iso"
+    if [[ $support_arch = i686 ]]; then
+        mkarchiso ${verbose} -w "${work_dir}" -D "${install_dir}" -L "${iso_label}" -o "${out_dir}" iso "${iso_name}-${iso_version}-i686.iso"
+    else
+        mkarchiso ${verbose} -w "${work_dir}" -D "${install_dir}" -L "${iso_label}" -o "${out_dir}" iso "${iso_name}-${iso_version}-dual.iso"
+    fi
 }
 
 if [[ ${EUID} -ne 0 ]]; then
     echo "This script must be run as root."
     _usage 1
 fi
+support_arch="i686"
+[[ $arch = x86_64 ]] && support_arch="i686 x86_64"
 
-if [[ ${arch} != x86_64 ]]; then
-    echo "This script needs to be run on x86_64"
-    _usage 1
-fi
-
-while getopts 'N:V:L:D:w:o:g:vh' arg; do
+rebuild=0
+while getopts 'N:V:L:D:w:o:g:vrh' arg; do
     case "${arg}" in
         N) iso_name="${OPTARG}" ;;
         V) iso_version="${OPTARG}" ;;
@@ -236,6 +240,7 @@ while getopts 'N:V:L:D:w:o:g:vh' arg; do
         o) out_dir="${OPTARG}" ;;
         g) gpg_key="${OPTARG}" ;;
         v) verbose="-v" ;;
+        r) rebuild=$((rebuild+1)) ;;
         h) _usage 0 ;;
         *)
            echo "Invalid argument '${arg}'"
@@ -244,24 +249,25 @@ while getopts 'N:V:L:D:w:o:g:vh' arg; do
     esac
 done
 
+[[ $rebuild = 1 ]] && rm -fv $work_dir/build.make_*
+[[ $rebuild = 2 ]] && rm -rf $work_dir $out_dir
 mkdir -p ${work_dir}
-
 run_once make_pacman_conf
 
 # Do all stuff for each airootfs
-for arch in i686 x86_64; do
+for arch in $support_arch; do
     run_once make_basefs
     run_once make_packages
 done
 
 run_once make_packages_efi
 
-for arch in i686 x86_64; do
+for arch in $support_arch; do
     run_once make_setup_mkinitcpio
     run_once make_customize_airootfs
 done
 
-for arch in i686 x86_64; do
+for arch in $support_arch; do
     run_once make_boot
 done
 
@@ -269,11 +275,15 @@ done
 run_once make_boot_extra
 run_once make_syslinux
 run_once make_isolinux
-run_once make_efi
-run_once make_efiboot
+if [[ $support_arch != i686 ]]; then
+    run_once make_efi
+    run_once make_efiboot
+fi
 
-for arch in i686 x86_64; do
+for arch in $support_arch; do
     run_once make_prepare
 done
 
 run_once make_iso
+
+# vim:et sw=4 ts=4 ai nocp sta
