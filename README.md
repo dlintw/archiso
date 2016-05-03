@@ -70,7 +70,7 @@ cd configs/archtw
 Want to contribute? Welcome!
 
 ## Version/版本
-2016.05.02 - First Release, 初次釋出
+2016.05.03 - First Release, 初次釋出
 
 License
 -------
