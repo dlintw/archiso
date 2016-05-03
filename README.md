@@ -77,7 +77,7 @@ License
 
 GPL (Derived as same as archiso)
 
-[archtw]: <https://github.com/dlintw/archiso>
+[archtw]: <https://github.com/dlintw/archiso/tree/archtw>
 [archiso]: <https://wiki.archlinux.org/index.php/Archiso>
 
 [//]: # (
