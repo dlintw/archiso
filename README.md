@@ -12,7 +12,7 @@ Its features including
 - 佔用空間小可完全在記憶體中運作（最少需要512MB)
 - Gparted - 可用來分割重新調整磁碟機分區的工具
 - xombrero - 精簡的瀏覽器, 具有兼具傳統滑鼠點選及類似 vi 按鍵操作介面(按F1看說明)
-- xombrero - 精簡的a minimal browser
+  Ctrl-Z 關閉 vi 按鍵換成一般瀏覽器模式.
 - gcin - 中文輸入
 - 內含幾乎所有 Arch Linux 標準安裝光碟的工具
 
@@ -55,6 +55,16 @@ sudo ./build.sh -rrv  # full clean & rebuild
 
 sudo ./inst_grub.sh sdb /mnt/sdb1
 ```
+## Usage / 使用
+
+* 開機選單主要分兩大類:
+ * i686 - 適用於較古老的主機
+ * x86\_64 - 目前一般主機
+* 每一大類分三種運作模式:
+ * 一般: 作業系統放置於隨身碟，資料放在記憶體, 不可拔出隨身碟, 關機資料消失
+ * RAM: 作業系統及資料都放在記憶體, 開機完可拔出隨身碟, 關機資料消失
+ * RAM+COW: 作業系統至於隨身碟, 資料都放在隨身碟, 使用時不可拔出隨身碟
+
 ## Reference
 - [archiso]
 
@@ -72,6 +82,7 @@ Want to contribute? Welcome!
 
 ## Version/版本
 2016.05.03 - First Release, 初次釋出
+2016.05.05 - merged x86\_64 settings,  整合 x86\_64 設定
 
 Known Problem
 -------------

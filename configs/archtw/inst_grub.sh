@@ -34,9 +34,14 @@ menuentry 'archiso i686' {
     cow_spacesize=50% cow_label=ARCH_COW
   initrd /arch/boot/intel_ucode.img /arch/boot/i686/archiso.img
 }
-menuentry 'archiso i686 512M ram required' {
+menuentry 'archiso i686 RAM MODE, 512 ram required' {
   linux /arch/boot/i686/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
-    copytoram copytoram_size=373M cow_spacesize=50% cow_label=ARCH_COW
+    copytoram copytoram_size=400M cow_spacesize=50%
+  initrd /arch/boot/intel_ucode.img /arch/boot/i686/archiso.img
+}
+menuentry 'archiso i686 RAM+COW MODE, 512M ram required' {
+  linux /arch/boot/i686/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
+    copytoram copytoram_size=400M cow_spacesize=50% cow_label=ARCH_COW
   initrd /arch/boot/intel_ucode.img /arch/boot/i686/archiso.img
 }
 menuentry 'archiso x86_64' {
@@ -44,9 +49,14 @@ menuentry 'archiso x86_64' {
     cow_spacesize=50% cow_label=ARCH_COW
   initrd /arch/boot/intel_ucode.img /arch/boot/x86_64/archiso.img
 }
-menuentry 'archiso x86_64 512M ram required' {
+menuentry 'archiso x86_64 RAM MODE, 512M ram required' {
   linux /arch/boot/x86_64/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
-    copytoram copytoram_size=373M cow_spacesize=50% cow_label=ARCH_COW
+    copytoram copytoram_size=400M cow_spacesize=50%
+  initrd /arch/boot/intel_ucode.img /arch/boot/x86_64/archiso.img
+}
+menuentry 'archiso x86_64 RAM+COW MODE, 512M ram required' {
+  linux /arch/boot/x86_64/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
+    copytoram copytoram_size=400M cow_spacesize=50% cow_label=ARCH_COW
   initrd /arch/boot/intel_ucode.img /arch/boot/x86_64/archiso.img
 }
 EOT
@@ -60,4 +70,3 @@ rm -rf $usb_mnt/arch/boot/memtest*
 echo "merge $mnt_usb/boot/grub/grub.sample.cfg with grub.cfg manually"
 
 # vim:et sw=2 ts=2 ai nocp sta
-
