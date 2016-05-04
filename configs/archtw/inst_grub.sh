@@ -34,10 +34,20 @@ menuentry 'archiso i686' {
     cow_spacesize=50% cow_label=ARCH_COW
   initrd /arch/boot/intel_ucode.img /arch/boot/i686/archiso.img
 }
-Emenuentry 'archiso i686 373M ram required' {
+menuentry 'archiso i686 512M ram required' {
   linux /arch/boot/i686/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
     copytoram copytoram_size=373M cow_spacesize=50% cow_label=ARCH_COW
   initrd /arch/boot/intel_ucode.img /arch/boot/i686/archiso.img
+}
+menuentry 'archiso x86_64' {
+  linux /arch/boot/x86_64/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
+    cow_spacesize=50% cow_label=ARCH_COW
+  initrd /arch/boot/intel_ucode.img /arch/boot/x86_64/archiso.img
+}
+menuentry 'archiso x86_64 512M ram required' {
+  linux /arch/boot/x86_64/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
+    copytoram copytoram_size=373M cow_spacesize=50% cow_label=ARCH_COW
+  initrd /arch/boot/intel_ucode.img /arch/boot/x86_64/archiso.img
 }
 EOT
 

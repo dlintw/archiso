@@ -28,7 +28,7 @@ dd if=archtw-<VERSION>.iso of=/dev/sdb bs=1M
 We can use GRUB as alternate method. This method is more powerful and useful.
 
 1. Split the usb stick into two partitions. 
-2. Format first partition as NTFS/FAT32 parition and label as *ARCH_TW*.  
+2. Format first partition as FAT32/NTFS parition and label as *ARCH_TW*.  
   This is used as windows usb and bootable Linux partition.
 3. Format second partition as ext4 linux partition and lable as *ARCH_COW*.
   This is used as 'Copy-On-Write' partition to keep your modification.
@@ -36,7 +36,7 @@ We can use GRUB as alternate method. This method is more powerful and useful.
 我們也可以使用 GRUB 來安裝, 這個方法比較好用.
 
 1. 隨身碟分割為兩個分區
-2. 將第一個分區格式化為 NTFS, 並將標籤定為 *ARCH_TW*
+2. 將第一個分區格式化為 FAT32, 並將標籤定為 *ARCH_TW*
 3. 將第二個分區格式化為 ext4, 並將標籤定為 *ARCH_COW*
 
 ```sh
@@ -44,14 +44,16 @@ We can use GRUB as alternate method. This method is more powerful and useful.
 mkdir -p /mnt/sdb1
 mount /dev/sdb1 /mnt/sdb1
 
-# build from source
-git clone https://github.com/dlintw/archiso
-cd archiso
-git checkout archtw # switch to archtw branch
-cd configs/archtw
-./build.sh -rrv  # full clean & rebuild
+# install required packages
+sudo pacman -S archiso
 
-./inst_grub.sh sdb /mnt/sdb1
+# build from source
+git clone -b archtw https://github.com/dlintw/archiso
+cd archiso
+cd configs/archtw
+sudo ./build.sh -rrv  # full clean & rebuild
+
+sudo ./inst_grub.sh sdb /mnt/sdb1
 ```
 ## Reference
 - [archiso]
@@ -60,9 +62,8 @@ cd configs/archtw
 
 Following the [archiso] guide
 ```sh
-git clone https://github.com/dlintw/archiso
+git clone -b archtw https://github.com/dlintw/archiso
 cd archiso
-git checkout archtw # switch to archtw branch
 cd configs/archtw
 # modification
 ./build.sh -rrv  # full clean & rebuild
@@ -71,6 +72,13 @@ Want to contribute? Welcome!
 
 ## Version/版本
 2016.05.03 - First Release, 初次釋出
+
+Known Problem
+-------------
+
+1. 無法重整 NTFS 磁區
+ * A1. 目前 Linux 沒有好的工具可以修正 NTFS 的錯誤, 必須切回 Windows 修正, 因此
+   不建議使用
 
 License
 -------
