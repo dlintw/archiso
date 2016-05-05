@@ -29,32 +29,32 @@ cat<<EOT > $usb_mnt/boot/grub/grub.sample.cfg
 # path to the partition holding ISO images (using UUID)
 probe -u \$root --set=rootuuid
 set imgdevpath="/dev/disk/by-uuid/\$rootuuid"
-menuentry 'archiso i686' {
+menuentry 'Arch Linux Taiwan i686' {
   linux /arch/boot/i686/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
     cow_spacesize=50% cow_label=ARCH_COW
   initrd /arch/boot/intel_ucode.img /arch/boot/i686/archiso.img
 }
-menuentry 'archiso i686 RAM MODE, 512 ram required' {
+menuentry 'Arch Linux Taiwan i686 RAM MODE, 600M ram required' {
   linux /arch/boot/i686/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
     copytoram copytoram_size=400M cow_spacesize=50%
   initrd /arch/boot/intel_ucode.img /arch/boot/i686/archiso.img
 }
-menuentry 'archiso i686 RAM+COW MODE, 512M ram required' {
+menuentry 'Arch Linux Taiwan i686 RAM+COW MODE, 600M ram required' {
   linux /arch/boot/i686/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
     copytoram copytoram_size=400M cow_spacesize=50% cow_label=ARCH_COW
   initrd /arch/boot/intel_ucode.img /arch/boot/i686/archiso.img
 }
-menuentry 'archiso x86_64' {
+menuentry 'Arch Linux Taiwan x86_64' {
   linux /arch/boot/x86_64/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
     cow_spacesize=50% cow_label=ARCH_COW
   initrd /arch/boot/intel_ucode.img /arch/boot/x86_64/archiso.img
 }
-menuentry 'archiso x86_64 RAM MODE, 512M ram required' {
+menuentry 'Arch Linux Taiwan x86_64 RAM MODE, 600M ram required' {
   linux /arch/boot/x86_64/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
     copytoram copytoram_size=400M cow_spacesize=50%
   initrd /arch/boot/intel_ucode.img /arch/boot/x86_64/archiso.img
 }
-menuentry 'archiso x86_64 RAM+COW MODE, 512M ram required' {
+menuentry 'Arch Linux Taiwan x86_64 RAM+COW MODE, 600M ram required' {
   linux /arch/boot/x86_64/vmlinuz archisobasedir=arch archisolabel=ARCH_TW \
     copytoram copytoram_size=400M cow_spacesize=50% cow_label=ARCH_COW
   initrd /arch/boot/intel_ucode.img /arch/boot/x86_64/archiso.img

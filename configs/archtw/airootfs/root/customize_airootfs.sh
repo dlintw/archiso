@@ -39,7 +39,7 @@ id arch || useradd -m -g users -s /usr/bin/zsh \
 
 # use random number as 'arch' & 'root' password
 echo "root:$RANDOM$RANDOM" | chpasswd
-echo "arch:$RANDOM$RANDOM" | chpasswd
+echo "arch:arch" | chpasswd
 
 grep -q '^arch' /etc/sudoers || echo 'arch ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
