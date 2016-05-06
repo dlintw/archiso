@@ -32,7 +32,7 @@ systemctl disable choose-mirror.service || true
 #cp /etc/pacman.d/mirrorlist{.tw,}
 
 ## add 'arch' normal user
-sed -i 's/root/arch/' /etc/systemd/system/getty@ty1.service.d/autologin.conf || true
+#sed -i 's/root/arch/' /etc/systemd/system/getty@tty1.service.d/autologin.conf || true
 id arch || useradd -m -g users -s /usr/bin/zsh \
   -G "adm,audio,floppy,log,network,rfkill,scanner,storage,optical,power,wheel" \
   arch

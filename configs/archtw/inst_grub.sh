@@ -67,6 +67,6 @@ cp -a $work_dir/iso/arch $usb_mnt
 rm -rf $usb_mnt/arch/boot/syslinux
 rm -rf $usb_mnt/arch/boot/memtest*
 
-echo "merge $mnt_usb/boot/grub/grub.sample.cfg with grub.cfg manually"
+echo "merge $usb_mnt/boot/grub/grub.sample.cfg with grub.cfg manually"
 
 # vim:et sw=2 ts=2 ai nocp sta
