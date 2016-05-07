@@ -3,16 +3,14 @@
 Its features including
 - Small and fit into RAM (minimum 512MB required)
 - Gparted - a GUI for resizing partitions of disk
-- xombrero - A minimalists web browser, vi-like but with traditional web 
-  browser behavior.(F1 for more help)
+- Chormium - Browser for internet access
 - gcin - providing various Chinese input method
 - almost all utility in Arch Linux standard install disk 
 
 [archtw]是專為台灣使用者訂製的圖形化Arch Linux開機片.主要特色包含:
 - 佔用空間小可完全在記憶體中運作（最少需要512MB)
 - Gparted - 可用來分割重新調整磁碟機分區的工具
-- xombrero - 精簡的瀏覽器, 具有兼具傳統滑鼠點選及類似 vi 按鍵操作介面(按F1看說明)
-  Ctrl-Z 關閉 vi 按鍵換成一般瀏覽器模式.
+- Chromium - 上網瀏覽器
 - gcin - 中文輸入
 - 內含幾乎所有 Arch Linux 標準安裝光碟的工具
 
@@ -85,9 +83,10 @@ Want to contribute? Welcome!
 ## Version/版本
 2016.05.03 - First Release, 初次釋出
 2016.05.05 - merged x86\_64 settings,  整合 x86\_64 設定
+2016.05.07 - use chromium instead of xombrero(373M->438M), 改用chromium瀏覽器
 
-Known Problem
--------------
+Known Problems
+--------------
 
 1. 無法重整 NTFS 磁區
  * A1. 目前 Linux 沒有好的工具可以修正 NTFS 的錯誤, 必須切回 Windows 修正, 因此
