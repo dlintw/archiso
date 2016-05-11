@@ -31,9 +31,11 @@ _usage ()
     echo "                        Default: ${work_dir}"
     echo "    -o <out_dir>       Set the output directory"
     echo "                        Default: ${out_dir}"
+    echo "    -g <gpg_key>       Set the gpg key"
     echo "    -v                 Enable verbose output"
     echo "    -r                 clear and rebuild"
     echo "    -rr                clear work & output directories and rebuild"
+    echo "    -s                 Use syslinux as bootloader"
     echo "    -h                 This help message"
     exit ${1}
 }
@@ -214,12 +216,28 @@ make_prepare() {
 }
 
 # Build ISO
-make_iso() {
+get_iso_name() {
     if [[ $support_arch = i686 ]]; then
-        mkarchiso ${verbose} -w "${work_dir}" -D "${install_dir}" -L "${iso_label}" -o "${out_dir}" iso "${iso_name}-${iso_version}-i686.iso"
+        echo "${iso_name}-${iso_version}-i686.iso"
     else
-        mkarchiso ${verbose} -w "${work_dir}" -D "${install_dir}" -L "${iso_label}" -o "${out_dir}" iso "${iso_name}-${iso_version}-dual.iso"
+        echo "${iso_name}-${iso_version}-dual.iso"
     fi
+}
+make_iso() {
+    local long_iso_name=$(get_iso_name)
+    mkarchiso ${verbose} -w "${work_dir}" -D "${install_dir}" \
+        -L "${iso_label}" -o "${out_dir}" iso $long_iso_name
+}
+make_grubiso() {
+    local long_iso_name=$(get_iso_name)
+    local iso_dir="$work_dir/grubiso"
+    mkdir -p $iso_dir $out_dir
+    cp -a $work_dir/iso/arch $iso_dir
+    rm -rf $iso_dir/arch/boot/syslinux
+    install -D grub/grub.cfg $iso_dir/boot/grub/grub.cfg
+    install ../../README.md $iso_dir/README.txt
+    grub-mkrescue ${verbose} -o $out_dir/$long_iso_name \
+        -- -volid ${iso_label} $iso_dir
 }
 
 if [[ ${EUID} -ne 0 ]]; then
@@ -230,6 +248,7 @@ support_arch="i686"
 [[ $arch = x86_64 ]] && support_arch="i686 x86_64"
 
 rebuild=0
+use_syslinux=0
 while getopts 'N:V:L:D:w:o:g:vrh' arg; do
     case "${arg}" in
         N) iso_name="${OPTARG}" ;;
@@ -241,6 +260,7 @@ while getopts 'N:V:L:D:w:o:g:vrh' arg; do
         g) gpg_key="${OPTARG}" ;;
         v) verbose="-v" ;;
         r) rebuild=$((rebuild+1)) ;;
+        s) use_syslinux=1 ;;
         h) _usage 0 ;;
         *)
            echo "Invalid argument '${arg}'"
@@ -273,17 +293,24 @@ done
 
 # Do all stuff for "iso"
 run_once make_boot_extra
-run_once make_syslinux
-run_once make_isolinux
-if [[ $support_arch != i686 ]]; then
-    run_once make_efi
-    run_once make_efiboot
+
+if [[ $use_syslinux == 1 ]]; then
+    run_once make_syslinux
+    run_once make_isolinux
+    if [[ $support_arch != i686 ]]; then
+        run_once make_efi
+        run_once make_efiboot
+    fi
 fi
 
 for arch in $support_arch; do
     run_once make_prepare
 done
 
-run_once make_iso
+if [[ $use_syslinux == 1 ]]; then
+    run_once make_iso
+else
+    run_once make_grubiso
+fi
 
 # vim:et sw=4 ts=4 ai nocp sta
