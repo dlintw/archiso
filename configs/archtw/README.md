@@ -97,7 +97,9 @@ Known Problems
  * A1. 目前 Linux 沒有好的工具可以修正 NTFS 的錯誤, 必須切回 Windows 修正, 因此
    不建議使用
 2. 當 make grubiso 時, 失敗不會脫離
- * A2. rm work/build.make_grubiso_x86_64 再
+ * A2. rm work/build.make_grubiso_x86_64 再重跑 build.sh
+3. X11 右邊數字按鍵對應不正確
+ * A3. 仍不知如何修正
 
 License
 -------

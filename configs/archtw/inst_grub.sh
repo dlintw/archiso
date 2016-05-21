@@ -60,6 +60,9 @@ menuentry 'Arch Linux Taiwan x86_64 RAM+COW MODE, 600M ram required' {
   initrd /arch/boot/intel_ucode.img /arch/boot/x86_64/archiso.img
 }
 EOT
+if [ ! -r $usb_mnt/boot/grub/grub.cfg ]; then
+  mv $usb_mnt/boot/grub/grub.sample.cfg $usb_mnt/boot/grub/grub.cfg
+fi
 
 # copy files
 mkdir -p $usb_mnt/arch
